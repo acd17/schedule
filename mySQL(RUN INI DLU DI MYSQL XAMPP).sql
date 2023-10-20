@@ -1,3 +1,7 @@
+/*
+    Run ini di mySQL XAMPP kalian dulu yaa! :DD
+*/
+
 #mysql -u root
 
 CREATE DATABASE auth;

@@ -191,7 +191,9 @@ function is_secure(array $data, string $field): bool
         return false;
     }
 
-    $pattern = "#.*^(?=.{8,64})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#";
+    //$pattern = "#.*^(?=.{8,64})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#";  //underscore tidak termasuk kedalam "unique character"
+    $pattern = "#.*^(?=.{8,64})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).*$#"; //underscore termasuk kedalam "unique character"
+
     return preg_match($pattern, $data[$field]);
 }
 

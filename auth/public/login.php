@@ -1,10 +1,10 @@
 <?php
+require __DIR__ . '/../src/bootstrap.php';
+require __DIR__ . '/../src/login.php';
 
 if (is_user_logged_in()) {
     redirect_to('index.php');
 }
-require __DIR__ . '/../src/bootstrap.php';
-require __DIR__ . '/../src/login.php';
 ?>
 
 <?php view('header', ['title' => 'Login']) ?>

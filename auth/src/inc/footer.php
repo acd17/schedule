@@ -1,6 +1,5 @@
 </main>
 <link rel="stylesheet" href="../../style.css">
-<a>bla bla bla ini footer</a>
 <div class="footers">
     <div>
     <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"

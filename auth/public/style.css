@@ -1,15 +1,48 @@
+body
+{
+  max-width: 100vw;
+}
+
+.containers
+{
+  width: 100%;
+  overflow-y: hidden;
+}
+
 .navbar
 {
     background-color: #fff;
+    position: relative;
 }
 
 .logos
 {
-    align-items: end;
-    justify-content: left;
-    left: 80%;
-    position: absolute;
+    align-items: center;
+    display: flex;
 }
+
+.logoNiku
+{
+  align-items: center;
+  justify-content: end;
+  left: 1300px;
+  position: absolute;
+  display: flex;
+}
+
+.menu
+{
+  border: none;
+}
+
+/* ----------------------SIDEBAR------------------------ */
+
+.users
+{
+  border: none;
+}
+
+
 
 
 /* --------------------TASK LIST DI INDEX.PHP-------------------- */
@@ -20,6 +53,12 @@ table {
   background: white;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.formTask
+{
+  top: 22%;
+  position: absolute;
 }
 
 th, td {
@@ -69,7 +108,7 @@ tr:hover {
 
 /* Adjust table width and padding for better readability */
 table {
-  width: 90%; /* Make the table wider */
+  width: 80%; /* Make the table wider */
 }
 
 th, td {

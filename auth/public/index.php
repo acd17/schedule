@@ -10,7 +10,7 @@ require_login();
     $errors = "";
 
     // connect to database
-    $db = mysqli_connect("localhost", "root", "", "todo");
+    $db = mysqli_connect("localhost", "root", "", "db_task");
 
     // insert a quote if submit button is clicked
     if (isset($_POST['submit'])) {
@@ -23,12 +23,21 @@ require_login();
                     header('location: index.php');
             }
     }
-    
+
+    // delete task
     if (isset($_GET['del_task'])) {
         $id = $_GET['del_task'];
+    
+        // Use prepared statements to prevent SQL injection
+        $stmt = mysqli_prepare($db, "DELETE FROM tasks WHERE id = ?");
+        mysqli_stmt_bind_param($stmt, 'i', $id);
 
-        mysqli_query($db, "DELETE FROM tasks WHERE id=".$id);
-        header('location: index.php');
+        if (mysqli_stmt_execute($stmt)) {
+            header('location: index.php');
+        } else {
+            // Handle the error if the query execution fails
+            echo "Error: " . mysqli_error($db);
+        }
     }
 ?>
 
@@ -127,48 +136,58 @@ require_login();
 
 
     <!--------------------------TASK LIST---------------------------->
-    <div>
-        <div class="heading">
-            <h2 style="font-style: 'Hervetica';">ToDo List Application PHP and MySQL database</h2>
-        </div>
-
-        <form method="post" action="index.php" class="input_form">
-            <?php if (isset($errors)) { ?>
-            <p><?php echo $errors; ?></p>
-            <?php } ?>
-            <input type="text" name="task" class="task_input">
-            <button type="submit" name="submit" id="add_btn" class="add_btn">Add Task</button>
-        </form>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>N</th>
-                    <th>Tasks</th>
-                    <th style="width: 60px;">Action</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <?php 
-                // select all tasks if page is visited or refreshed
-                $tasks = mysqli_query($db, "SELECT * FROM tasks");
-
-                $i = 1; while ($row = mysqli_fetch_array($tasks)) { ?>
-                    <tr>
-                        <td> <?php echo $i; ?> </td>
-                        <td class="task"> <?php echo $row['task']; ?> </td>
-                        <td class="delete"> 
-                                <a href="index.php?del_task=<?php echo $row['id'] ?>">x</a> 
-                        </td>
-                    </tr>
-                <?php $i++; } ?>  
-            </tbody>
-        </table>
-        
-    </div>
-
-
+    <div class="col-md-3"></div>
+	<div class="col-md-6 well">
+		<hr style="border-top:1px dotted #ccc;"/>
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<center>
+				<form method="POST" class="form-inline" action="add_query.php">
+					<input type="text" class="form-control" name="task" required/>
+					<button class="btn btn-primary form-control" name="add">Add Task</button>
+				</form>
+			</center>
+		</div>
+		<br /><br /><br />
+		<table class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Task</th>
+					<th>Status</th>
+					<th>Action</th>
+                    <th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					require 'conn.php';
+					$query = $conn->query("SELECT * FROM `task` ORDER BY `task_id` ASC");
+					$count = 1;
+					while($fetch = $query->fetch_array()){
+				?>
+				<tr>
+					<td><?php echo $count++?></td>
+					<td><?php echo $fetch['task']?></td>
+					<td><?php echo $fetch['status']?></td>
+					<td colspan="2">
+						<center>
+							<?php
+								if($fetch['status'] != "Done"){
+									echo 
+									'<a href="update_task.php?task_id='.$fetch['task_id'].'" class="btn btn-success"><span class="glyphicon glyphicon-check"></span></a> |';
+								}
+							?>
+							 <a href="delete_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
+						</center>
+					</td>
+				</tr>
+				<?php
+					}
+				?>
+			</tbody>
+		</table>
+	</div>
 
 
 </body>

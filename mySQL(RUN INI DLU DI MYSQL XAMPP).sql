@@ -18,12 +18,23 @@ CREATE TABLE users (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE DATABASE db_task;
 
-CREATE DATABASE todo;
+use db_task;
 
-use todo;
-
-CREATE TABLE tasks (
-    id INT(10),
-    task VARCHAR(255)
-);
+CREATE TABLE `task` (
+  `task_id` int(11) NOT NULL,
+  `task` varchar(150) NOT NULL,
+  `status` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ 
+INSERT INTO `task` (`task_id`, `task`, `status`) VALUES
+(1, 'Check Errors', 'Done'),
+(4, 'Remove Bugs', ''),
+(5, 'Need Improvements', '');
+ 
+ALTER TABLE `task`
+  ADD PRIMARY KEY (`task_id`);
+ 
+ALTER TABLE `task`
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;

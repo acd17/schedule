@@ -56,4 +56,22 @@ function updateStatus(select) {
 }
 
 
+/*-------------------------FUNCTION UPDATE DUE DATE-------------------------*/
+function updateDueDate(input) {
+  const taskID = input.name.split('_')[2];
+  const dueDate = input.value;
 
+  // Send an AJAX request to update the due date in the database
+  $.ajax({
+      type: 'POST',
+      url: 'update_due_date.php',
+      data: { task_id: taskID, due_date: dueDate },
+      success: function(response) {
+          // Handle the response if needed
+          console.log(response);
+      },
+      error: function(error) {
+          console.log('Error:', error);
+      }
+  });
+}

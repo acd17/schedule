@@ -101,10 +101,10 @@ require_login();
                                <a href="./logout.php" class="block px-4 py-2 text-sm text-black hover:shadow-lg" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
                            </div>
                        </div></li>
-                      <li><a href="../tasklist/tasklist.html" class="block px-4 py-2 text-sm text-black hover:shadow-lg mt-5">
+                      <li><a href="./index.php" class="block px-4 py-2 text-sm text-black hover:shadow-lg mt-5">
                         <img src="./aset/list.png" alt="Logo" class="h-8 w-8 mr-2 inline-block">
                         Task List</a></li>
-                      <li><a href="../lessonplan/lessonplan.html" class="block px-4 py-2 text-sm text-black hover:shadow-lg mt-4">
+                      <li><a href="./lesson_plan.php" class="block px-4 py-2 text-sm text-black hover:shadow-lg mt-4">
                         <img src="./aset/book.png" alt="Logo" class="h-8 w-8 mr-2 inline-block">
                         Lesson Plan</a></li>
                       <!-- <li><a href="#" class="block px-4 py-2 text-sm text-black hover:shadow-lg mt-2">About Us</a></li>
@@ -162,55 +162,56 @@ require_login();
     </div>
     <br /><br /><br />
     <table class="table">
-        <thead>
-            <tr>
-                <th>Complete</th> <!-- New column -->
-                <th>#</th>
-                <th>Task</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Date Created</th> 
-                <th>Date Modified</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-                require 'conn.php';
+    <thead>
+        <tr>
+            <th>Complete</th> <!-- New column -->
+            <th>#</th>
+            <th>Task</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Due Date</th> <!-- New column header -->
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+            require 'conn.php';
 
-                // Retrieve and display tasks with "Not Done" status
-                $query = $conn->query("SELECT * FROM `task` WHERE NOT `status` = 'Done' ORDER BY `task_id` ASC");
-                $count = 1;
+            // Retrieve and display tasks with "Not Done" status
+            $query = $conn->query("SELECT * FROM `task` WHERE NOT `status` = 'Done' ORDER BY `task_id` ASC");
+            $count = 1;
 
-                while($fetch = $query->fetch_array()){
-            ?>
-            <tr>
-                <td></td> <!-- Empty cell in the "Complete" column -->
-                <td><?php echo $count++?></td>
-                <td><?php echo $fetch['task']?></td>
-                <td><?php echo $fetch['detail']?></td> 
-                <td>
-                    <select name="status" id="status_<?php echo $fetch['task_id']; ?>" onchange="updateStatus(this)">
-                        <option value="Not Yet Started" <?php echo ($fetch['status'] == 'Not Yet Started') ? 'selected' : ''; ?>>Not Yet Started</option>
-                        <option value="On Progress" <?php echo ($fetch['status'] == 'On Progress') ? 'selected' : ''; ?>>On Progress</option>
-                        <option value="Done" <?php echo ($fetch['status'] == 'Done') ? 'selected' : ''; ?>>Done</option>
-                    </select>
-                </td>
-                <td><?php echo $fetch['date_created']?></td> 
-                <td><?php echo $fetch['date_modified']?></td> 
-                <td>
-                    <center>
-                    <?php
-                        if ($fetch['status'] != "Done") {
-                            echo '<a href="update_task.php?task_id=' . $fetch['task_id'] . '" onclick="return confirm(\'Are you sure you want to mark this task as done?\')" 
-                                        class="btn btn-success"><span class="glyphicon glyphicon-check">Done</span></a> |';
-                        }
-                    ?> 
-                        <a href="edit_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-info"><span class="glyphicon glyphicon-pencil">Edit</span></a> |
-                        <a href="delete_query.php?task_id=<?php echo $fetch['task_id']; ?>" onclick="return confirm('Are you sure you want to delete this task?')" class="btn btn-danger"><span class="glyphicon glyphicon-remove">Delete</span></a>
-                    </center>
-                </td>
-            </tr>
+            while($fetch = $query->fetch_array()){
+        ?>
+        <tr>
+            <td></td> <!-- Empty cell in the "Complete" column -->
+            <td><?php echo $count++?></td>
+            <td><?php echo $fetch['task']?></td>
+            <td><?php echo $fetch['detail']?></td> 
+            <td>
+                <select name="status" id="status_<?php echo $fetch['task_id']; ?>" onchange="updateStatus(this)">
+                    <option value="Not Yet Started" <?php echo ($fetch['status'] == 'Not Yet Started') ? 'selected' : ''; ?>>Not Yet Started</option>
+                    <option value="On Progress" <?php echo ($fetch['status'] == 'On Progress') ? 'selected' : ''; ?>>On Progress</option>
+                    <option value="Done" <?php echo ($fetch['status'] == 'Done') ? 'selected' : ''; ?>>Done</option>
+                </select>
+            </td>
+            <td>
+                <!-- Input element for due date -->
+                <input type="date" name="due_date_<?php echo $fetch['task_id']; ?>" value="<?php echo $fetch['due_date']; ?>" onchange="updateDueDate(this)">
+            </td>
+            <td>
+                <center>
+                <?php
+                    if ($fetch['status'] != "Done") {
+                        echo '<a href="update_task.php?task_id=' . $fetch['task_id'] . '" onclick="return confirm(\'Are you sure you want to mark this task as done?\')" 
+                                    class="btn btn-success"><span class="glyphicon glyphicon-check">Done</span></a> |';
+                    }
+                ?> 
+                    <a href="edit_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-info"><span class="glyphicon glyphicon-pencil">Edit</span></a> |
+                    <a href="delete_query.php?task_id=<?php echo $fetch['task_id']; ?>" onclick="return confirm('Are you sure you want to delete this task?')" class="btn btn-danger"><span class="glyphicon glyphicon-remove">Delete</span></a>
+                </center>
+            </td>
+        </tr>
             <?php
                 }
 
@@ -231,8 +232,7 @@ require_login();
                         <option value="Done" <?php echo ($fetch['status'] == 'Done') ? 'selected' : ''; ?>>Done</option>
                     </select>
                 </td>
-                <td><?php echo $fetch['date_created']?></td> 
-                <td><?php echo $fetch['date_modified']?></td> 
+                <td><?php echo $fetch['due_date']?></td> 
                 <td>
                     <center>
                         <a href="edit_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-info"><span class="glyphicon glyphicon-pencil">Edit</span></a> |

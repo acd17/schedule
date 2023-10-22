@@ -2,7 +2,7 @@
     Run ini di mySQL XAMPP kalian dulu yaa! :DD
 */
 
-#mysql -u root
+mysql -u root
 
 CREATE DATABASE auth;
 

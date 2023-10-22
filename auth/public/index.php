@@ -56,26 +56,25 @@ require_login();
 <?php view('header', ['title' => 'Dashboard']) ?>
 
 
-<script src="script.js"></script>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TIMECRAFT</title>
-    <link rel="website icon" type="jpg" href="./aset/logo.jpg">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="./style.css">
-  </head>
-  <body>
-   <nav class="bg-white sticky top-0 z-50">
-      <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>TIMECRAFT</title>
+        <link rel="website icon" type="jpg" href="./aset/logo.jpg">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="./style.css">
+        <script src="script.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <nav class="bg-white sticky top-0 z-50">
+            <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div class="relative flex h-16 items-center justify-between">
           <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div x-data="{ sidebarOpen: false }">
@@ -163,76 +162,122 @@ require_login();
     </div>
     <br /><br /><br />
     <table class="table">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Task</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Date Created</th> 
-            <th>Date Modified</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-            require 'conn.php';
+        <thead>
+            <tr>
+                <th>Complete</th> <!-- New column -->
+                <th>#</th>
+                <th>Task</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Date Created</th> 
+                <th>Date Modified</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                require 'conn.php';
 
-            // Retrieve and display tasks with "Not Done" status
-            $query = $conn->query("SELECT * FROM `task` WHERE NOT `status` = 'Done' ORDER BY `task_id` ASC");
-            $count = 1;
+                // Retrieve and display tasks with "Not Done" status
+                $query = $conn->query("SELECT * FROM `task` WHERE NOT `status` = 'Done' ORDER BY `task_id` ASC");
+                $count = 1;
 
-            while($fetch = $query->fetch_array()){
-        ?>
-        <tr>
-            <td><?php echo $count++?></td>
-            <td><?php echo $fetch['task']?></td>
-            <td><?php echo $fetch['detail']?></td> 
-            <td><?php echo $fetch['status']?></td>
-            <td><?php echo $fetch['date_created']?></td> 
-            <td><?php echo $fetch['date_modified']?></td> 
-            <td>
-                <center>
-                <?php
-                    if ($fetch['status'] != "Done") {
-                        echo '<a href="update_task.php?task_id=' . $fetch['task_id'] . '" onclick="return confirm(\'Are you sure you want to mark this task as done?\')" 
-                                    class="btn btn-success"><span class="glyphicon glyphicon-check">Done</span></a> |';
-                    }
-                ?>
-                    <a href="edit_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-info"><span class="glyphicon glyphicon-pencil">Edit</span></a> | <!-- Add Edit Button -->
-                    <a href="delete_query.php?task_id=<?php echo $fetch['task_id']; ?>" onclick="return confirm('Are you sure you want to delete this task?')" class="btn btn-danger"><span class="glyphicon glyphicon-remove">Delete</span></a>
-                </center>
-            </td>
-        </tr>
-        <?php
-            }
+                while($fetch = $query->fetch_array()){
+            ?>
+            <tr>
+                <td></td> <!-- Empty cell in the "Complete" column -->
+                <td><?php echo $count++?></td>
+                <td><?php echo $fetch['task']?></td>
+                <td><?php echo $fetch['detail']?></td> 
+                <td>
+                    <select name="status" id="status_<?php echo $fetch['task_id']; ?>" onchange="updateStatus(this)">
+                        <option value="Not Yet Started" <?php echo ($fetch['status'] == 'Not Yet Started') ? 'selected' : ''; ?>>Not Yet Started</option>
+                        <option value="On Progress" <?php echo ($fetch['status'] == 'On Progress') ? 'selected' : ''; ?>>On Progress</option>
+                        <option value="Done" <?php echo ($fetch['status'] == 'Done') ? 'selected' : ''; ?>>Done</option>
+                    </select>
+                </td>
+                <td><?php echo $fetch['date_created']?></td> 
+                <td><?php echo $fetch['date_modified']?></td> 
+                <td>
+                    <center>
+                    <?php
+                        if ($fetch['status'] != "Done") {
+                            echo '<a href="update_task.php?task_id=' . $fetch['task_id'] . '" onclick="return confirm(\'Are you sure you want to mark this task as done?\')" 
+                                        class="btn btn-success"><span class="glyphicon glyphicon-check">Done</span></a> |';
+                        }
+                    ?> 
+                        <a href="edit_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-info"><span class="glyphicon glyphicon-pencil">Edit</span></a> |
+                        <a href="delete_query.php?task_id=<?php echo $fetch['task_id']; ?>" onclick="return confirm('Are you sure you want to delete this task?')" class="btn btn-danger"><span class="glyphicon glyphicon-remove">Delete</span></a>
+                    </center>
+                </td>
+            </tr>
+            <?php
+                }
 
-            // Retrieve and display tasks with "Done" status
-            $query = $conn->query("SELECT * FROM `task` WHERE `status` = 'Done' ORDER BY `task_id` ASC");
+                // Retrieve and display tasks with "Done" status
+                $query = $conn->query("SELECT * FROM `task` WHERE `status` = 'Done' ORDER BY `task_id` ASC");
 
-            while($fetch = $query->fetch_array()){
-        ?>
-        <tr>
-            <td><?php echo $count++?></td>
-            <td><?php echo $fetch['task']?></td>
-            <td><?php echo $fetch['detail']?></td> 
-            <td><?php echo $fetch['status']?></td>
-            <td><?php echo $fetch['date_created']?></td> 
-            <td><?php echo $fetch['date_modified']?></td> 
-            <td>
-                <center>
-                    <a href="edit_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-info"><span class="glyphicon glyphicon-pencil">Edit</span></a> |
-                    <a href="delete_query.php?task_id=<?php echo $fetch['task_id']; ?>" onclick="return confirm('Are you sure you want to delete this task?')" class="btn btn-danger"><span class="glyphicon glyphicon-remove">Delete</span></a>
-                </center>
-            </td>
-        </tr>
-        <?php
-            }
-        ?>
-    </tbody>
-</table>
+                while($fetch = $query->fetch_array()){
+            ?>
+            <tr>
+                <td>✔</td> <!-- Display a checkmark in the "Complete" column -->
+                <td><?php echo $count++?></td>
+                <td><?php echo $fetch['task']?></td>
+                <td><?php echo $fetch['detail']?></td> 
+                <td>
+                    <select name="status" id="status_<?php echo $fetch['task_id']; ?>" onchange="updateStatus(this)">
+                        <option value="Not Yet Started" <?php echo ($fetch['status'] == 'Not Yet Started') ? 'selected' : ''; ?>>Not Yet Started</option>
+                        <option value="On Progress" <?php echo ($fetch['status'] == 'On Progress') ? 'selected' : ''; ?>>On Progress</option>
+                        <option value="Done" <?php echo ($fetch['status'] == 'Done') ? 'selected' : ''; ?>>Done</option>
+                    </select>
+                </td>
+                <td><?php echo $fetch['date_created']?></td> 
+                <td><?php echo $fetch['date_modified']?></td> 
+                <td>
+                    <center>
+                        <a href="edit_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-info"><span class="glyphicon glyphicon-pencil">Edit</span></a> |
+                        <a href="delete_query.php?task_id=<?php echo $fetch['task_id']; ?>" onclick="return confirm('Are you sure you want to delete this task?')" class="btn btn-danger"><span class="glyphicon glyphicon-remove">Delete</span></a>
+                    </center>
+                </td>
+            </tr>
+            <?php
+                }
+            ?>
+        </tbody>
+    </table>
+
 
 </div>
+
+<script>
+function updateStatus(select) {
+    const taskID = select.id.split('_')[1];
+    const status = select.value;
+
+    if (status === 'Done' && !confirm('Are you sure you want to mark this task as Done?')) {
+        // If the user clicks Cancel in the confirmation dialog, do nothing
+        return;
+    }
+
+    // Send an AJAX request to update the task status
+    $.ajax({
+        type: 'POST',
+        url: 'update_status.php',
+        data: { task_id: taskID, status: status },
+        success: function(response) {
+            // Handle the response if needed
+            console.log(response);
+
+            // Reload the page after the status is updated
+            location.reload();
+        },
+        error: function(error) {
+            console.log('Error:', error);
+        }
+    });
+}
+</script>
+
 
 
 </body>

@@ -26,6 +26,10 @@ CREATE TABLE `task` (
   `task_id` int(11) NOT NULL,
   `task` varchar(150) NOT NULL,
   `status` varchar(150) NOT NULL
+  'detail' varchar(255),
+  'date_created' TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  'date_modified' DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  'due_date' DATE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
  
 INSERT INTO `task` (`task_id`, `task`, `status`) VALUES

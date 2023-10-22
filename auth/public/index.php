@@ -14,14 +14,26 @@ require_login();
 
     // insert a quote if submit button is clicked
     if (isset($_POST['submit'])) {
-            if (empty($_POST['task'])) {
-                    $errors = "You must fill in the task";
-            }else{
-                    $task = $_POST['task'];
-                    $sql = "INSERT INTO tasks (task) VALUES ('$task')";
-                    mysqli_query($db, $sql);
-                    header('location: index.php');
+        if (empty($_POST['task'])) {
+            $errors = "You must fill in the task";
+        } else {
+            $task = $_POST['task'];
+            // Set the default status to "Not Done"
+            $status = "Not Done";
+    
+            // Connect to your database (modify this according to your connection details)
+            $db = mysqli_connect("localhost", "root", "", "db_task");
+    
+            $stmt = mysqli_prepare($db, "INSERT INTO task (task, status) VALUES (?, ?)");
+            mysqli_stmt_bind_param($stmt, 'ss', $task, $status);
+    
+            if (mysqli_stmt_execute($stmt)) {
+                header('location: index.php');
+            } else {
+                // Handle the error if the query execution fails
+                echo "Error: " . mysqli_error($db);
             }
+        }
     }
 
     // delete task
@@ -137,60 +149,94 @@ require_login();
 
     <!--------------------------TASK LIST---------------------------->
     <div class="col-md-3"></div>
-	<div class="col-md-6 well">
-		<hr style="border-top:1px dotted #ccc;"/>
-		<div class="col-md-2"></div>
-		<div class="col-md-8">
-			<center>
-				<form method="POST" class="form-inline" action="add_query.php">
-					<input type="text" class="form-control" name="task" required/>
-					<button class="btn btn-primary form-control" name="add">Add Task</button>
-				</form>
-			</center>
-		</div>
-		<br /><br /><br />
-		<table class="table">
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Task</th>
-					<th>Status</th>
-					<th>Action</th>
-                    <th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-					require 'conn.php';
-					$query = $conn->query("SELECT * FROM `task` ORDER BY `task_id` ASC");
-					$count = 1;
-					while($fetch = $query->fetch_array()){
-				?>
-				<tr>
+    <div class="col-md-6 well">
+        <hr style="border-top:1px dotted #ccc;"/>
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <center>
+                <form method="POST" class="form-inline" action="add_query.php">
+                    <input type="text" class="form-control" name="task" required placeholder="Task Name"/> <!-- Task Name input -->
+                    <input type="text" class="form-control" name="detail" placeholder="Task Description"/> <!-- Task Description input -->
+                    <button class="btn btn-primary form-control" name="add">Add Task</button>
+                </form>
+            </center>
+    </div>
+    <br /><br /><br />
+    <table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Task</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Date Created</th> 
+            <th>Date Modified</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+            require 'conn.php';
+
+            // Retrieve and display tasks with "Not Done" status
+            $query = $conn->query("SELECT * FROM `task` WHERE NOT `status` = 'Done' ORDER BY `task_id` ASC");
+            $count = 1;
+
+            while($fetch = $query->fetch_array()){
+        ?>
+        <tr>
             <td><?php echo $count++?></td>
             <td><?php echo $fetch['task']?></td>
+            <td><?php echo $fetch['detail']?></td> 
             <td><?php echo $fetch['status']?></td>
+            <td><?php echo $fetch['date_created']?></td> 
+            <td><?php echo $fetch['date_modified']?></td> 
             <td>
                 <center>
-                    <?php
-                        if ($fetch['status'] != "Done") {
-                            echo '<a href="update_task.php?task_id=' . $fetch['task_id'] . '" class="btn btn-success"><span class="glyphicon glyphicon-check"></span></a> |';
-                        }
-                    ?>
-                    <a href="edit_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span></a> | <!-- Add Edit Button -->
-                    <a href="delete_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
+                <?php
+                    if ($fetch['status'] != "Done") {
+                        echo '<a href="update_task.php?task_id=' . $fetch['task_id'] . '" onclick="return confirm(\'Are you sure you want to mark this task as done?\')" 
+                                    class="btn btn-success"><span class="glyphicon glyphicon-check">Done</span></a> |';
+                    }
+                ?>
+                    <a href="edit_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-info"><span class="glyphicon glyphicon-pencil">Edit</span></a> | <!-- Add Edit Button -->
+                    <a href="delete_query.php?task_id=<?php echo $fetch['task_id']; ?>" onclick="return confirm('Are you sure you want to delete this task?')" class="btn btn-danger"><span class="glyphicon glyphicon-remove">Delete</span></a>
                 </center>
             </td>
         </tr>
-				<?php
-					}
-				?>
-			</tbody>
-		</table>
-	</div>
+        <?php
+            }
+
+            // Retrieve and display tasks with "Done" status
+            $query = $conn->query("SELECT * FROM `task` WHERE `status` = 'Done' ORDER BY `task_id` ASC");
+
+            while($fetch = $query->fetch_array()){
+        ?>
+        <tr>
+            <td><?php echo $count++?></td>
+            <td><?php echo $fetch['task']?></td>
+            <td><?php echo $fetch['detail']?></td> 
+            <td><?php echo $fetch['status']?></td>
+            <td><?php echo $fetch['date_created']?></td> 
+            <td><?php echo $fetch['date_modified']?></td> 
+            <td>
+                <center>
+                    <a href="edit_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-info"><span class="glyphicon glyphicon-pencil">Edit</span></a> |
+                    <a href="delete_query.php?task_id=<?php echo $fetch['task_id']; ?>" onclick="return confirm('Are you sure you want to delete this task?')" class="btn btn-danger"><span class="glyphicon glyphicon-remove">Delete</span></a>
+                </center>
+            </td>
+        </tr>
+        <?php
+            }
+        ?>
+    </tbody>
+</table>
+
+</div>
 
 
 </body>
 
 
 <?php view('footer') ?>
+

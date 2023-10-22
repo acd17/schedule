@@ -13,80 +13,67 @@
 
 
 /* --------------------TASK LIST DI INDEX.PHP-------------------- */
-.heading{
-    width: 50%;
-    margin: 30px auto;
-    text-align: center;
-    color:  #6B8E23;
-    background: #FFF8DC;
-    border: 2px solid #6B8E23;
-    border-radius: 20px;
-}
-form {
-    width: 50%; 
-    margin: 30px auto; 
-    border-radius: 5px; 
-    padding: 10px;
-    background: #FFF8DC;
-    border: 1px solid #6B8E23;
-}
-form p {
-    color: red;
-    margin: 0px;
-}
-.task_input {
-    width: 75%;
-    height: 15px; 
-    padding: 10px;
-    border: 2px solid #6B8E23;
-}
-.add_btn {
-    height: 39px;
-    background: #FFF8DC;
-    color:  #6B8E23;
-    border: 2px solid #6B8E23;
-    border-radius: 5px; 
-    padding: 5px 20px;
-}
-
 table {
-width: 50%;
-margin: 30px auto;
-border-collapse: collapse;
+  width: 80%;
+  margin: 30px auto;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-tr {
-    border-bottom: 1px solid #cbcbcb;
+th, td {
+  border: none;
+  padding: 10px;
 }
 
 th {
-    font-size: 19px;
-    color: #6B8E23;
+  font-size: 19px;
+  color: #6B8E23;
+  background: #FFF8DC;
+  text-align: center;
 }
 
-th, td{
-    border: none;
-height: 30px;
-padding: 2px;
+td {
+  text-align: left; /* Left-align the task column */
+  white-space: normal; /* Allow text to wrap */
+}
+
+tr {
+  border-bottom: 1px solid #cbcbcb;
 }
 
 tr:hover {
-    background: #E9E9E9;
+  background: #E9E9E9;
 }
 
-.task {
-    text-align: left;
+.edit, .delete {
+  text-align: center;
 }
 
-.delete{
-    text-align: center;
+.edit a, .delete a {
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-right: 5px;
 }
-.delete a{
-    color: white;
-    background: #a52a2a;
-    padding: 1px 6px;
-    border-radius: 3px;
-    text-decoration: none;
+
+.edit a {
+  background: #007bff;
+}
+
+.delete a {
+  background: #a52a2a;
+}
+
+/* Adjust table width and padding for better readability */
+table {
+  width: 90%; /* Make the table wider */
+}
+
+th, td {
+  padding: 12px; /* Increase the padding for better spacing */
 }
 
 /* --------------------WAVES------------------------- */

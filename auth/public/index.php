@@ -167,21 +167,21 @@ require_login();
 					while($fetch = $query->fetch_array()){
 				?>
 				<tr>
-					<td><?php echo $count++?></td>
-					<td><?php echo $fetch['task']?></td>
-					<td><?php echo $fetch['status']?></td>
-					<td colspan="2">
-						<center>
-							<?php
-								if($fetch['status'] != "Done"){
-									echo 
-									'<a href="update_task.php?task_id='.$fetch['task_id'].'" class="btn btn-success"><span class="glyphicon glyphicon-check"></span></a> |';
-								}
-							?>
-							 <a href="delete_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
-						</center>
-					</td>
-				</tr>
+            <td><?php echo $count++?></td>
+            <td><?php echo $fetch['task']?></td>
+            <td><?php echo $fetch['status']?></td>
+            <td>
+                <center>
+                    <?php
+                        if ($fetch['status'] != "Done") {
+                            echo '<a href="update_task.php?task_id=' . $fetch['task_id'] . '" class="btn btn-success"><span class="glyphicon glyphicon-check"></span></a> |';
+                        }
+                    ?>
+                    <a href="edit_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span></a> | <!-- Add Edit Button -->
+                    <a href="delete_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
+                </center>
+            </td>
+        </tr>
 				<?php
 					}
 				?>

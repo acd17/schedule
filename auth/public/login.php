@@ -1,10 +1,10 @@
 <?php
-
-// if (is_user_logged_in()) {
-//     redirect_to('index.php');
-// }
 require __DIR__ . '/../src/bootstrap.php';
 require __DIR__ . '/../src/login.php';
+
+if (is_user_logged_in()) {
+    redirect_to('index.php');
+}
 ?>
 
 <?php view('header', ['title' => 'Login']) ?>
@@ -38,7 +38,7 @@ require __DIR__ . '/../src/login.php';
 <?php
 
 if (is_user_logged_in()) {
-    redirect_to('./sidebar/sidebar.php');
+    redirect_to('./index.php');
 }
 
 $inputs = [];
@@ -72,7 +72,7 @@ if (is_post_request()) {
     }
 
     // login successfully
-    redirect_to('./sidebar/sidebar.php');
+    redirect_to('./index.php');
 
 } else if (is_get_request()) {
     [$errors, $inputs] = session_flash('errors', 'inputs');

@@ -1,4 +1,3 @@
-<!-- INI INDEX UTAMA -->
 <?php
 
 require __DIR__ . '/../src/bootstrap.php';
@@ -145,138 +144,64 @@ require_login();
       </div>
     </nav>
 
+    <!-- ----------TABLE--------- -->
+    <?php
+        // Connect to your database (modify this according to your connection details)
+        $db = mysqli_connect("localhost", "root", "", "db_task");
 
-    <!--------------------------TASK LIST---------------------------->
-    <div class="col-md-3"></div>
-    <div class="col-md-6 well">
-        <hr style="border-top:1px dotted #ccc;"/>
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <center>
-                <form method="POST" class="form-inline" action="add_query.php">
-                    <input type="text" class="form-control" name="task" required placeholder="Task Name"/> <!-- Task Name input -->
-                    <input type="text" class="form-control" name="detail" placeholder="Task Description"/> <!-- Task Description input -->
-                    <button class="btn btn-primary form-control" name="add">Add Task</button>
-                </form>
-            </center>
-    </div>
-    <br /><br /><br />
-    <table class="table">
-    <thead>
-        <tr>
-            <th>Complete</th> <!-- New column -->
-            <th>#</th>
-            <th>Task</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Due Date</th> <!-- New column header -->
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-            require 'conn.php';
+        // Define the task statuses
+        $statuses = array("Not Yet Started", "On Progress", "Done");
 
-            // Retrieve and display tasks with "Not Done" status
-            $query = $conn->query("SELECT * FROM `task` WHERE NOT `status` = 'Done' ORDER BY `task_id` ASC");
-            $count = 1;
-
-            while($fetch = $query->fetch_array()){
-        ?>
-        <tr>
-            <td></td> <!-- Empty cell in the "Complete" column -->
-            <td><?php echo $count++?></td>
-            <td><?php echo $fetch['task']?></td>
-            <td><?php echo $fetch['detail']?></td> 
-            <td>
-                <select name="status" id="status_<?php echo $fetch['task_id']; ?>" onchange="updateStatus(this)">
-                    <option value="Not Yet Started" <?php echo ($fetch['status'] == 'Not Yet Started') ? 'selected' : ''; ?>>Not Yet Started</option>
-                    <option value="On Progress" <?php echo ($fetch['status'] == 'On Progress') ? 'selected' : ''; ?>>On Progress</option>
-                    <option value="Done" <?php echo ($fetch['status'] == 'Done') ? 'selected' : ''; ?>>Done</option>
-                </select>
-            </td>
-            <td>
-                <!-- Input element for due date -->
-                <input type="date" name="due_date_<?php echo $fetch['task_id']; ?>" value="<?php echo $fetch['due_date']; ?>" onchange="updateDueDate(this)">
-            </td>
-            <td>
-                <center>
-                <?php
-                    if ($fetch['status'] != "Done") {
-                        echo '<a href="update_task.php?task_id=' . $fetch['task_id'] . '" onclick="return confirm(\'Are you sure you want to mark this task as done?\')" 
-                                    class="btn btn-success"><span class="glyphicon glyphicon-check">Done</span></a> |';
-                    }
-                ?> 
-                    <a href="edit_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-info"><span class="glyphicon glyphicon-pencil">Edit</span></a> |
-                    <a href="delete_query.php?task_id=<?php echo $fetch['task_id']; ?>" onclick="return confirm('Are you sure you want to delete this task?')" class="btn btn-danger"><span class="glyphicon glyphicon-remove">Delete</span></a>
-                </center>
-            </td>
-        </tr>
-            <?php
-                }
-
-                // Retrieve and display tasks with "Done" status
-                $query = $conn->query("SELECT * FROM `task` WHERE `status` = 'Done' ORDER BY `task_id` ASC");
-
-                while($fetch = $query->fetch_array()){
-            ?>
-            <tr>
-                <td>✔</td> <!-- Display a checkmark in the "Complete" column -->
-                <td><?php echo $count++?></td>
-                <td><?php echo $fetch['task']?></td>
-                <td><?php echo $fetch['detail']?></td> 
-                <td>
-                    <select name="status" id="status_<?php echo $fetch['task_id']; ?>" onchange="updateStatus(this)">
-                        <option value="Not Yet Started" <?php echo ($fetch['status'] == 'Not Yet Started') ? 'selected' : ''; ?>>Not Yet Started</option>
-                        <option value="On Progress" <?php echo ($fetch['status'] == 'On Progress') ? 'selected' : ''; ?>>On Progress</option>
-                        <option value="Done" <?php echo ($fetch['status'] == 'Done') ? 'selected' : ''; ?>>Done</option>
-                    </select>
-                </td>
-                <td><?php echo $fetch['due_date']?></td> 
-                <td>
-                    <center>
-                        <a href="edit_query.php?task_id=<?php echo $fetch['task_id']?>" class="btn btn-info"><span class="glyphicon glyphicon-pencil">Edit</span></a> |
-                        <a href="delete_query.php?task_id=<?php echo $fetch['task_id']; ?>" onclick="return confirm('Are you sure you want to delete this task?')" class="btn btn-danger"><span class="glyphicon glyphicon-remove">Delete</span></a>
-                    </center>
-                </td>
-            </tr>
-            <?php
-                }
-            ?>
-        </tbody>
-    </table>
-
-
-</div>
-
-<script>
-function updateStatus(select) {
-    const taskID = select.id.split('_')[1];
-    const status = select.value;
-
-    if (status === 'Done' && !confirm('Are you sure you want to mark this task as Done?')) {
-        // If the user clicks Cancel in the confirmation dialog, do nothing
-        return;
-    }
-
-    // Send an AJAX request to update the task status
-    $.ajax({
-        type: 'POST',
-        url: 'update_status.php',
-        data: { task_id: taskID, status: status },
-        success: function(response) {
-            // Handle the response if needed
-            console.log(response);
-
-            // Reload the page after the status is updated
-            location.reload();
-        },
-        error: function(error) {
-            console.log('Error:', error);
+        echo "<table border='1'><tr>";
+        // Create a table header row with the status names
+        foreach ($statuses as $status) {
+            echo "<th>$status</th>";
         }
-    });
-}
-</script>
+        echo "</tr>";
+
+        // Determine the maximum number of tasks in any status
+        $maxTasks = 0;
+        foreach ($statuses as $status) {
+            $stmt = mysqli_prepare($db, "SELECT COUNT(*) as task_count FROM task WHERE status = ?");
+            mysqli_stmt_bind_param($stmt, 's', $status);
+
+            if (mysqli_stmt_execute($stmt)) {
+                $result = mysqli_stmt_get_result($stmt);
+                $row = mysqli_fetch_assoc($result);
+                $taskCount = $row['task_count'];
+                $maxTasks = max($maxTasks, $taskCount);
+            }
+        }
+
+        // Create rows for each task, including the status cell
+        for ($i = 0; $i < $maxTasks; $i++) {
+            echo "<tr>";
+
+            foreach ($statuses as $status) {
+                $stmt = mysqli_prepare($db, "SELECT task, due_date FROM task WHERE status = ? LIMIT 1 OFFSET ?");
+                mysqli_stmt_bind_param($stmt, 'si', $status, $i);
+
+                if (mysqli_stmt_execute($stmt)) {
+                    $result = mysqli_stmt_get_result($stmt);
+                    if ($row = mysqli_fetch_assoc($result)) {
+                        $taskName = $row['task'];
+                        $dueDate = $row['due_date'];
+                        echo "<td>$taskName<br>$dueDate</td>";
+                    } else {
+                        echo "<td></td>";
+                    }
+                } else {
+                    echo "Error: " . mysqli_error($db);
+                }
+            }
+            echo "</tr>";
+        }
+
+        echo "</table>";
+
+        // Close the database connection
+        mysqli_close($db);
+    ?>
 
 
 

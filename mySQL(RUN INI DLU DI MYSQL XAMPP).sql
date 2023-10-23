@@ -22,23 +22,23 @@ CREATE DATABASE db_task;
 
 use db_task;
 
-CREATE TABLE `task` (
-  `task_id` int(11) NOT NULL,
-  `task` varchar(150) NOT NULL,
-  `status` varchar(150) NOT NULL
-  'detail' varchar(255),
-  'date_created' TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  'date_modified' DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  'due_date' DATE
+CREATE TABLE task (
+  task_id int(11) NOT NULL,
+  task varchar(150) NOT NULL,
+  status varchar(150) NOT NULL,
+  detail varchar(255),
+  date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  date_modified DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  due_date DATE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
  
-INSERT INTO `task` (`task_id`, `task`, `status`) VALUES
+INSERT INTO task (task_id, task, status) VALUES
 (1, 'Check Errors', 'Done'),
 (4, 'Remove Bugs', ''),
 (5, 'Need Improvements', '');
  
-ALTER TABLE `task`
-  ADD PRIMARY KEY (`task_id`);
+ALTER TABLE task
+  ADD PRIMARY KEY (task_id);
  
-ALTER TABLE `task`
-  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE task
+  MODIFY task_id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;

@@ -114,7 +114,7 @@ require_login();
               </div>
           </div>          
            <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js"></script>
-            <div class="logoNiku hidden  sm:block items-end">
+            <div class="logoNiku hidden  sm:block items-end flex mt-3">
                 <div class="logos flex flex-row items-center"> 
                     <a class="font-bold text-black p-2">TIMECRAFT</a>
                     <img class="h-8 w-auto" src="./aset/logo.jpg" alt="logo">

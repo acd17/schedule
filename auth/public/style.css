@@ -1,90 +1,299 @@
+body
+{
+  max-width: 100vw;
+  /* max-height: 100vh; */
+  overflow-y: hidden;
+}
+
+.containers 
+{
+  width: 100%;
+  
+}
+
+nav
+{
+  width: 100%;
+  position: relative;
+}
+
 .navbar
 {
     background-color: #fff;
+    /* position: relative; */
 }
 
 .logos
 {
-    align-items: end;
-    justify-content: left;
-    left: 80%;
-    position: absolute;
+    align-items: center;
+    display: flex;
 }
+
+.logoNiku
+{
+  align-items: center;
+  justify-content: end;
+  left: 800px;
+  position: relative;
+  display: flex;
+}
+
+.menu
+{
+  display: flex;
+  border: none;
+  position: absolute;
+  /* transform: translate(-100%, 0%); */
+  left: -600px;
+  align-items: center;
+  justify-content: start;
+}
+
+/* ----------------------SIDEBAR------------------------ */
+
+.users
+{
+  border: none;
+}
+
+
 
 
 /* --------------------TASK LIST DI INDEX.PHP-------------------- */
-.heading{
-    width: 50%;
-    margin: 30px auto;
-    text-align: center;
-    color:  #6B8E23;
-    background: #FFF8DC;
-    border: 2px solid #6B8E23;
-    border-radius: 20px;
-}
-form {
-    width: 50%; 
-    margin: 30px auto; 
-    border-radius: 5px; 
-    padding: 10px;
-    background: #FFF8DC;
-    border: 1px solid #6B8E23;
-}
-form p {
-    color: red;
-    margin: 0px;
-}
-.task_input {
-    width: 75%;
-    height: 15px; 
-    padding: 10px;
-    border: 2px solid #6B8E23;
-}
-.add_btn {
-    height: 39px;
-    background: #FFF8DC;
-    color:  #6B8E23;
-    border: 2px solid #6B8E23;
-    border-radius: 5px; 
-    padding: 5px 20px;
-}
-
 table {
-width: 50%;
-margin: 30px auto;
-border-collapse: collapse;
+  width: 80%;
+  margin: 30px auto;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-tr {
-    border-bottom: 1px solid #cbcbcb;
+.formTask
+{
+  top: 80px;
+  position: relative;
+}
+
+th, td {
+  border: none;
+  padding: 10px;
 }
 
 th {
-    font-size: 19px;
-    color: #6B8E23;
+  border: none;
+  font-size: 19px;
+  color: #000000;
+  background: #D0AAD1;
+  text-align: center;
+  vertical-align: top; 
 }
 
-th, td{
+td {
+  text-align: left; /* Left-align the task column */
+  white-space: normal; /* Allow text to wrap */
+}
+
+tr {
+  border-bottom: 1px solid #cbcbcb;
+}
+
+/* tr:hover {
+  background: #E9E9E9;
+} */
+
+.edit, .delete {
+  text-align: center;
+}
+
+.edit a, .delete a {
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-right: 5px;
+}
+
+.edit a {
+  background: #D0E9E9;
+}
+
+.delete a {
+  background: #F2AAAE;
+}
+
+/* Adjust table width and padding for better readability */
+table {
+  width: 100%; /* Make the table wider */
+}
+
+th, td {
+  padding: 20px; /* Increase the padding for better spacing */
+}
+
+/* ------------------------lesson plan------------------------- */
+.table_status
+{
+  width: 60vw;
+  justify-content: left;
+}
+
+
+
+th.not-yet-started 
+{
+  width: 30%;
+  padding-right: 10%;
+  padding-left: 10%;
+  white-space: nowrap;
+}
+
+th.on-progress
+{
+  width: 10%;
+  padding-right: 5%;
+  display: flex;
+  text-align: center;
+  white-space: nowrap; 
+  left: 45%;
+  position: absolute;
+}
+
+th.done
+{
+  width: 10%;
+  padding-right: 5%;
+  left: 65%;
+  position: absolute;
+}
+
+td.not-yet-started 
+{
+  width: 30%;
+  padding-right: 10%;
+  padding-left: 10%;
+  white-space: nowrap;
+}
+
+td.on-progress
+{
+  width: 10%;
+  padding-right: 5%;
+  display: flex;
+  text-align: center;
+  white-space: nowrap; 
+  left: 45%;
+  position: absolute;
+  height: auto;
+}
+
+td.done
+{
+  padding-right: 5%;
+  left: 65%;
+  position: absolute;
+}
+
+.upTable
+{
+  background-color: #D0AAD1;
+}
+
+/* --------------------WAVES------------------------- */
+.footers {
+    position:relative;
+    text-align:center;
+    background: #ffffff;
+    color: rgba(121, 82, 179, 0.25);
+  }
+
+  .waves {
+  position:relative;
+  width: 100%;
+  height:15vh;
+  margin-bottom:-7px; /*Fix for safari gap*/
+  min-height:100px;
+  max-height:150px;
+}
+
+.content {
+  position:relative;
+  height:20vh;
+  text-align:center;
+  background-color: white;
+}
+
+/* Animation */
+
+.parallax > use {
+  animation: move-forever 25s cubic-bezier(.55,.5,.45,.5)     infinite;
+}
+.parallax > use:nth-child(1) {
+  animation-delay: -2s;
+  animation-duration: 7s;
+}
+.parallax > use:nth-child(2) {
+  animation-delay: -3s;
+  animation-duration: 10s;
+}
+.parallax > use:nth-child(3) {
+  animation-delay: -4s;
+  animation-duration: 13s;
+}
+.parallax > use:nth-child(4) {
+  animation-delay: -5s;
+  animation-duration: 20s;
+}
+@keyframes move-forever {
+  0% {
+   transform: translate3d(-90px,0,0);
+  }
+  100% { 
+    transform: translate3d(85px,0,0);
+  }
+}
+/*Shrinking for mobile*/
+@media (max-width: 768px) {
+  .waves {
+    height: 500px;
+    min-height:40px;
+  }
+  .content {
+    height:30vh;
+  }
+  h1 {
+    font-size:24px;
+  }
+
+  .menu
+  {
+    display: flex;
     border: none;
-height: 30px;
-padding: 2px;
+    position: absolute;
+    /* transform: translate(-100%, 0%); */
+    left: 200px;
+    top: 2px;
+    align-items: center;
+    justify-content: end;
+  }
+
+  .logoNiku
+{
+  align-items: center;
+  justify-content: start;
+  left: 10px;
+  position: relative;
+  display: flex;
 }
 
-tr:hover {
-    background: #E9E9E9;
+table {
+  overflow-y: hidden; /* Add a vertical scrollbar to the table */
 }
 
-.task {
-    text-align: left;
+/* Additional styles for the table within the media query */
+table th, table td {
+  white-space: nowrap; /* Prevent text from wrapping */
 }
 
-.delete{
-    text-align: center;
-}
-.delete a{
-    color: white;
-    background: #a52a2a;
-    padding: 1px 6px;
-    border-radius: 3px;
-    text-decoration: none;
+
 }

@@ -16,3 +16,6 @@ selanjutnya akan dibawa ke halaman utama (task list)
 di dalam task list dapat menambahkan list jadwal-jadwal
 lalu ada page lesson plan untuk mempermuda pemfilteran jadwal yang 'not yet progress', 'on progress', dan 'done'
 jika sudah selesai dalam pembuatan to do list user dapat melakukan sign out
+
+link GITHUB
+https://github.com/acd17/schedule.git

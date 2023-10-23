@@ -1,18 +1,26 @@
 body
 {
   max-width: 100vw;
+  /* max-height: 100vh; */
+  overflow-y: hidden;
 }
 
 .containers 
 {
   width: 100%;
-  overflow-y: hidden;
+  
+}
+
+nav
+{
+  width: 100%;
+  position: relative;
 }
 
 .navbar
 {
     background-color: #fff;
-    position: relative;
+    /* position: relative; */
 }
 
 .logos
@@ -25,14 +33,20 @@ body
 {
   align-items: center;
   justify-content: end;
-  left: 1200px;
+  left: 800px;
   position: relative;
   display: flex;
 }
 
 .menu
 {
+  display: flex;
   border: none;
+  position: absolute;
+  /* transform: translate(-100%, 0%); */
+  left: -600px;
+  align-items: center;
+  justify-content: start;
 }
 
 /* ----------------------SIDEBAR------------------------ */
@@ -57,7 +71,7 @@ table {
 
 .formTask
 {
-  top: 22%;
+  top: 80px;
   position: relative;
 }
 
@@ -67,10 +81,12 @@ th, td {
 }
 
 th {
+  border: none;
   font-size: 19px;
-  color: #6B8E23;
-  background: #FFF8DC;
+  color: #000000;
+  background: #D0AAD1;
   text-align: center;
+  vertical-align: top; 
 }
 
 td {
@@ -82,9 +98,9 @@ tr {
   border-bottom: 1px solid #cbcbcb;
 }
 
-tr:hover {
+/* tr:hover {
   background: #E9E9E9;
-}
+} */
 
 .edit, .delete {
   text-align: center;
@@ -99,20 +115,88 @@ tr:hover {
 }
 
 .edit a {
-  background: #007bff;
+  background: #D0E9E9;
 }
 
 .delete a {
-  background: #a52a2a;
+  background: #F2AAAE;
 }
 
 /* Adjust table width and padding for better readability */
 table {
-  width: 80%; /* Make the table wider */
+  width: 100%; /* Make the table wider */
 }
 
 th, td {
-  padding: 12px; /* Increase the padding for better spacing */
+  padding: 20px; /* Increase the padding for better spacing */
+}
+
+/* ------------------------lesson plan------------------------- */
+.table_status
+{
+  width: 60vw;
+  justify-content: left;
+}
+
+
+
+th.not-yet-started 
+{
+  width: 30%;
+  padding-right: 10%;
+  padding-left: 10%;
+  white-space: nowrap;
+}
+
+th.on-progress
+{
+  width: 10%;
+  padding-right: 5%;
+  display: flex;
+  text-align: center;
+  white-space: nowrap; 
+  left: 45%;
+  position: absolute;
+}
+
+th.done
+{
+  width: 10%;
+  padding-right: 5%;
+  left: 65%;
+  position: absolute;
+}
+
+td.not-yet-started 
+{
+  width: 30%;
+  padding-right: 10%;
+  padding-left: 10%;
+  white-space: nowrap;
+}
+
+td.on-progress
+{
+  width: 10%;
+  padding-right: 5%;
+  display: flex;
+  text-align: center;
+  white-space: nowrap; 
+  left: 45%;
+  position: absolute;
+  height: auto;
+}
+
+td.done
+{
+  padding-right: 5%;
+  left: 65%;
+  position: absolute;
+}
+
+.upTable
+{
+  background-color: #D0AAD1;
 }
 
 /* --------------------WAVES------------------------- */
@@ -171,7 +255,7 @@ th, td {
 /*Shrinking for mobile*/
 @media (max-width: 768px) {
   .waves {
-    height:40px;
+    height: 500px;
     min-height:40px;
   }
   .content {
@@ -180,4 +264,36 @@ th, td {
   h1 {
     font-size:24px;
   }
+
+  .menu
+  {
+    display: flex;
+    border: none;
+    position: absolute;
+    /* transform: translate(-100%, 0%); */
+    left: 200px;
+    top: 2px;
+    align-items: center;
+    justify-content: end;
+  }
+
+  .logoNiku
+{
+  align-items: center;
+  justify-content: start;
+  left: 10px;
+  position: relative;
+  display: flex;
+}
+
+table {
+  overflow-y: hidden; /* Add a vertical scrollbar to the table */
+}
+
+/* Additional styles for the table within the media query */
+table th, table td {
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+
 }

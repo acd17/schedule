@@ -1,9 +1,10 @@
 <?php
 require __DIR__ . '/../src/bootstrap.php';
 require __DIR__ . '/../src/register.php';
+echo '<link rel="stylesheet" type="text/css" href="./style.css">';
 ?>
 
-<?php view('header', ['title' => 'Register']) ?>
+<?php view('headerWOI', ['title' => 'Register']) ?>
 
 <form action="register.php" method="post">
     <h1>Sign Up</h1>

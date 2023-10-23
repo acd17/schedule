@@ -2,12 +2,15 @@
 require __DIR__ . '/../src/bootstrap.php';
 require __DIR__ . '/../src/login.php';
 
+echo '<link rel="stylesheet" type="text/css" href="./style.css">';
+
+
 if (is_user_logged_in()) {
     redirect_to('index.php');
 }
 ?>
 
-<?php view('header', ['title' => 'Login']) ?>
+<?php view('headerWOI', ['title' => 'Login']) ?>
 
 <?php if (isset($errors['login'])) : ?>
     <div class="alert alert-error">
